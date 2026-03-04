@@ -104,7 +104,7 @@ Click holographic language buttons:
 
 ## 📈 **DATA SOURCES**
 
-- **Projections:** Huokaing Thara economic analysis (Phnom Penh 2026)
+- **Projections:** Huokaing Thara economic analysis (2026)
 - **Live Feed:** GitHub API (`tharahuokaing` events)
 - **Countdown:** Precise to `2038-01-19T03:14:07Z`
 - **Charts:** Chart.js v4+ (responsive)
@@ -165,7 +165,6 @@ CLASSIFIED: Not for unauthorized distribution
 
 **Huokaing Thara**  
 **Y2K38 Threat Analyst**  
-**Phnom Penh, Cambodia**  
 **March 2026**
 
 ```
