@@ -16,17 +16,17 @@ weddingAudio.volume = 0.4; // Set elegant ambient volume threshold (40%)
 // Create Floating Audio Control Interface Button
 const audioBtn = document.createElement('button');
 audioBtn.id = 'weddingAudioToggleBtn';
-audioBtn.innerHTML = '🎵 '; // Initial Native Khmer Button Prompt Label
+audioBtn.innerHTML = '🎵'; // Initial Play Music icon
 
-// Apply inline layout styling to cleanly position the controller on screen
+// Apply inline layout styling
 Object.assign(audioBtn.style, {
     position: 'fixed',
-    bottom: '80px', // Sits safely above the default "Scroll to Top" button placement
-    right: '20px',
+    bottom: '80px',
+    left: '20px', // Moved from right to left
     zIndex: '1000',
-    backgroundColor: '#800020', // Matches your --ceremony-red theme signature
+    backgroundColor: '#800020', // Ceremony red
     color: '#ffffff',
-    border: '2px solid #c5a059', // Matches your --heritage-gold accent line
+    border: '2px solid #c5a059', // Heritage gold
     borderRadius: '50px',
     padding: '10px 18px',
     fontFamily: "'Hanuman', serif",
@@ -37,12 +37,13 @@ Object.assign(audioBtn.style, {
     transition: 'all 0.3s ease-in-out'
 });
 
-// Emulate CSS hover states dynamically
+// Hover effects
 audioBtn.onmouseover = () => {
     audioBtn.style.transform = 'scale(1.05)';
     audioBtn.style.backgroundColor = '#ffffff';
     audioBtn.style.color = '#800020';
 };
+
 audioBtn.onmouseout = () => {
     audioBtn.style.transform = 'scale(1)';
     audioBtn.style.backgroundColor = '#800020';
@@ -56,44 +57,47 @@ function toggleWeddingMusic() {
     if (weddingAudio.paused) {
         weddingAudio.play()
             .then(() => {
-                audioBtn.innerHTML = '🔇'; // Update label to "Mute Music"
+                audioBtn.innerHTML = '🔇'; // Click again to mute
                 audioBtn.style.borderColor = '#800020';
             })
             .catch(error => {
-                console.log("Autoplay context restricted by browser security policies.", error);
-                // Graceful fallback: silently keep the button state ready instead of alerting
-                audioBtn.innerHTML = '🎵 ';
+                console.log(
+                    "Autoplay context restricted by browser security policies.",
+                    error
+                );
+                audioBtn.innerHTML = '🎵';
                 audioBtn.style.borderColor = '#c5a059';
             });
     } else {
         weddingAudio.pause();
-        audioBtn.innerHTML = '🎵 '; // Revert back to "Play Music"
+        audioBtn.innerHTML = '🎵';
         audioBtn.style.borderColor = '#c5a059';
     }
 }
 
-// Bind native click event handler directly
+// Bind click event
 audioBtn.addEventListener('click', toggleWeddingMusic);
 
-// Inject component inside the document layout context dynamically once loaded
+// Initialize after page loads
 document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(audioBtn);
-    
-    // User Interaction Trigger: Attempts to start music smoothly upon the first real window interaction
+
+    // Attempt autoplay after the first user interaction
     const initiateAutoplay = () => {
-        if (weddingAudio.paused && audioBtn.innerHTML === '🎵 ') {
+        if (weddingAudio.paused && audioBtn.innerHTML === '🎵') {
             weddingAudio.play()
                 .then(() => {
                     audioBtn.innerHTML = '🔇';
                     audioBtn.style.borderColor = '#800020';
                 })
                 .catch(() => {
-                    // Safe catch if browser still enforces restriction until direct button click
-                    console.log("Ambient autoplay deferred to explicit user toggle.");
+                    console.log(
+                        "Ambient autoplay deferred to explicit user toggle."
+                    );
                 });
         }
     };
 
-    // Listen to first click across the layout to unlock the web audio sandbox profile cleanly
+    // Unlock audio on first user click
     document.body.addEventListener('click', initiateAutoplay, { once: true });
 });
